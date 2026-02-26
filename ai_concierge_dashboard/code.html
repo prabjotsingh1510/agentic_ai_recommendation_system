@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>DineWise AI - AI Concierge Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#12aee2",
+                        "background-light": "#f6f8f8",
+                        "background-dark": "#101d22",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Manrope', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(18, 174, 226, 0.2);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen overflow-hidden">
+<div class="flex h-screen w-full">
+<!-- Sidebar Navigation -->
+<aside class="w-64 border-r border-slate-200 dark:border-slate-800 flex flex-col shrink-0 bg-white dark:bg-slate-950">
+<div class="p-6 flex items-center gap-3">
+<div class="size-8 bg-primary rounded-lg flex items-center justify-center text-background-dark">
+<span class="material-symbols-outlined text-white font-bold">restaurant_menu</span>
+</div>
+<h1 class="text-xl font-extrabold tracking-tight text-slate-900 dark:text-white">DineWise<span class="text-primary">AI</span></h1>
+</div>
+<nav class="flex-1 px-4 py-4 space-y-1 overflow-y-auto custom-scrollbar">
+<div class="text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider px-3 mb-2">Main Menu</div>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg bg-primary/10 text-primary font-medium transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span> Dashboard
+                </a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900 hover:text-slate-900 dark:hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined">smart_toy</span> Active Agents
+                </a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900 hover:text-slate-900 dark:hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined">history</span> Dining History
+                </a>
+<a class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900 hover:text-slate-900 dark:hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined">favorite</span> Preferences
+                </a>
+<div class="pt-8 text-xs font-semibold text-slate-400 dark:text-slate-500 uppercase tracking-wider px-3 mb-2">Active Agents</div>
+<div class="space-y-3 px-3">
+<div class="flex items-center gap-3">
+<div class="relative">
+<div class="size-2 rounded-full bg-primary absolute -top-0.5 -right-0.5 ring-2 ring-white dark:ring-slate-950"></div>
+<span class="material-symbols-outlined text-slate-400">psychology</span>
+</div>
+<span class="text-sm font-medium">Gastronomy Pro</span>
+</div>
+<div class="flex items-center gap-3">
+<div class="relative">
+<div class="size-2 rounded-full bg-emerald-500 absolute -top-0.5 -right-0.5 ring-2 ring-white dark:ring-slate-950"></div>
+<span class="material-symbols-outlined text-slate-400">table_bar</span>
+</div>
+<span class="text-sm font-medium">Reservation Bot</span>
+</div>
+</div>
+</nav>
+<div class="p-4 border-t border-slate-200 dark:border-slate-800">
+<div class="bg-slate-100 dark:bg-slate-900 rounded-xl p-4 flex items-center gap-3">
+<div class="size-10 rounded-full bg-gradient-to-tr from-primary to-blue-400" data-alt="User profile avatar with blue gradient"></div>
+<div class="flex-1 min-w-0">
+<p class="text-sm font-bold truncate">Alex Chen</p>
+<p class="text-xs text-slate-500 dark:text-slate-400 truncate">Premium Plan</p>
+</div>
+<button class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+<span class="material-symbols-outlined text-xl">settings</span>
+</button>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col bg-slate-50 dark:bg-slate-950 overflow-hidden">
+<!-- Header -->
+<header class="h-16 flex items-center justify-between px-8 border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 z-10">
+<div class="flex items-center gap-4 flex-1 max-w-xl">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+<input class="w-full bg-slate-100 dark:bg-slate-900 border-none rounded-lg pl-10 pr-4 py-2 text-sm focus:ring-2 focus:ring-primary" placeholder="Search experiences, history, or agents..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="relative p-2 text-slate-500 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-900 rounded-lg">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 size-2 bg-red-500 rounded-full border-2 border-white dark:border-slate-950"></span>
+</button>
+<div class="h-6 w-px bg-slate-200 dark:border-slate-800"></div>
+<p class="text-sm font-semibold dark:text-slate-300">Monday, Oct 23rd</p>
+</div>
+</header>
+<div class="flex-1 overflow-y-auto p-8 space-y-8 custom-scrollbar">
+<!-- Morning Briefing Card -->
+<section>
+<div class="relative overflow-hidden rounded-2xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm p-8 group">
+<div class="absolute top-0 right-0 -mt-12 -mr-12 size-64 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/10 transition-colors"></div>
+<div class="relative z-10 flex flex-col md:flex-row gap-8 items-start">
+<div class="w-full md:w-2/3">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-primary fill-1">verified</span>
+<h2 class="text-lg font-bold text-slate-900 dark:text-white uppercase tracking-tight">Morning Briefing</h2>
+</div>
+<h3 class="text-3xl font-extrabold text-slate-900 dark:text-white mb-4">"Based on your Monday patterns, you usually crave light salads."</h3>
+<p class="text-slate-600 dark:text-slate-400 text-lg leading-relaxed mb-6">
+                                    I've scouted 3 Mediterranean spots with outdoor seating available today. The weather is a crisp 72°F—perfect for that patio seating you love. One spot, <span class="text-primary font-semibold italic">Olive &amp; Ivy</span>, has your favorite corner table open for 12:30 PM.
+                                </p>
+<div class="flex flex-wrap gap-4">
+<button class="bg-primary hover:bg-primary/90 text-background-dark font-bold px-6 py-3 rounded-lg flex items-center gap-2 transition-transform active:scale-95">
+                                        View Recommendations <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+<button class="bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-900 dark:text-white font-bold px-6 py-3 rounded-lg transition-colors">
+                                        Dismiss
+                                    </button>
+</div>
+</div>
+<div class="w-full md:w-1/3 flex flex-col gap-4">
+<div class="bg-slate-50 dark:bg-slate-950/50 rounded-xl p-4 border border-slate-100 dark:border-slate-800">
+<div class="flex items-center justify-between mb-2">
+<span class="text-xs font-bold text-slate-400 uppercase">Agent Confidence</span>
+<span class="text-xs font-bold text-primary">94%</span>
+</div>
+<div class="w-full bg-slate-200 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[94%]"></div>
+</div>
+</div>
+<div class="bg-slate-50 dark:bg-slate-950/50 rounded-xl p-4 border border-slate-100 dark:border-slate-800">
+<p class="text-xs font-bold text-slate-400 uppercase mb-2">Linked Data</p>
+<div class="flex gap-2">
+<div class="size-8 bg-slate-200 dark:bg-slate-800 rounded flex items-center justify-center text-slate-500">
+<span class="material-symbols-outlined text-sm">calendar_month</span>
+</div>
+<div class="size-8 bg-slate-200 dark:bg-slate-800 rounded flex items-center justify-center text-slate-500">
+<span class="material-symbols-outlined text-sm">cloud</span>
+</div>
+<div class="size-8 bg-slate-200 dark:bg-slate-800 rounded flex items-center justify-center text-slate-500">
+<span class="material-symbols-outlined text-sm">location_on</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Command Center -->
+<section class="flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<h2 class="text-xl font-bold text-slate-900 dark:text-white">Command Center</h2>
+<span class="text-xs font-medium text-slate-500 flex items-center gap-1">
+<span class="size-1.5 bg-primary rounded-full"></span> AI Processing Active
+                        </span>
+</div>
+<div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-lg p-1 overflow-hidden">
+<div class="min-h-[160px] p-6 text-xl font-medium text-slate-800 dark:text-slate-200 focus:outline-none placeholder:text-slate-300 dark:placeholder:text-slate-700" contenteditable="true">
+                            "Find me a quiet dinner spot for tonight. I'm meeting a client who likes Italian but is sensitive to loud music. Needs to be within 15 mins of Downtown..."
+                        </div>
+<div class="bg-slate-50 dark:bg-slate-950 px-4 py-3 flex items-center justify-between border-t border-slate-200 dark:border-slate-800">
+<div class="flex items-center gap-2">
+<button class="p-2 text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-lg transition-colors">
+<span class="material-symbols-outlined">mic</span>
+</button>
+<button class="p-2 text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-lg transition-colors">
+<span class="material-symbols-outlined">attach_file</span>
+</button>
+<button class="p-2 text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-lg transition-colors">
+<span class="material-symbols-outlined">image</span>
+</button>
+</div>
+<button class="bg-primary hover:bg-primary/90 text-background-dark font-bold px-8 py-2 rounded-lg transition-transform active:scale-95 shadow-md shadow-primary/20">
+                                Send Instruction
+                            </button>
+</div>
+</div>
+</section>
+<!-- Grid Layout for Additional Stats -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+<div class="space-y-4">
+<h3 class="text-lg font-bold">Upcoming Bookings</h3>
+<div class="space-y-3">
+<div class="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 flex items-center gap-4">
+<div class="size-12 rounded-lg bg-center bg-cover" data-alt="Sushi restaurant interior" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCACo8fPixJ7k_mZt3YWVqdOH0Jc0ZLXyBp427trNZV-qyp119D7gL3KbF8Xjg3xkQlSSqT2KEaBNF88pDS4QbkFqoonAzrOuegTrRxbhYi0I4MCI14eDgvwekqnh_f96riJUxE4XjSCvwnn6Tp3i2a7uW8TxAg69SG3Z5VEAwUSh1A1isao4bczxBZszHdqCbTxwDG_mgs5ef_L82oquhoKfNNCz_-HyoLEpYNXKu-mUKs3K0JSBCE-bkMGMnvcAI04eEanxT_TsE')"></div>
+<div class="flex-1">
+<p class="font-bold text-slate-900 dark:text-white">Takumi Sushi</p>
+<p class="text-xs text-slate-500 dark:text-slate-400">Wednesday • 7:00 PM • 2 Guests</p>
+</div>
+<span class="px-2 py-1 bg-emerald-500/10 text-emerald-500 text-[10px] font-bold rounded uppercase">Confirmed</span>
+</div>
+<div class="bg-white dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-800 flex items-center gap-4 opacity-70">
+<div class="size-12 rounded-lg bg-center bg-cover" data-alt="Coffee shop table" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBa8k83Y-aNmq2dTS4fcCcQLgGa2Y2gLpZidYI4eoexaeuudFk4K_ZAmQcxPhEKEpH2p4NFCMGFQaVRKN3bAti9Y1ojfAfrIs9TeMnrfKHXn7I_F3uNtyRZFIYw9SsL7XIbkEZidT3HAxRfWKSERXJCBa-pw45xHzqDbUMAJNI9pgQaOmeut3AE6vtLDxIbm4YGlM9Y5W6HHY-gpP16NrW1F5AyIf4SuWjFqyxlHO4c4M7E13koCMGkNTay-WWflv6aJNRPFDvQ_8Q')"></div>
+<div class="flex-1">
+<p class="font-bold text-slate-900 dark:text-white">The Grind Coffee</p>
+<p class="text-xs text-slate-500 dark:text-slate-400">Friday • 10:00 AM • 1 Guest</p>
+</div>
+<span class="px-2 py-1 bg-slate-100 dark:bg-slate-800 text-slate-500 text-[10px] font-bold rounded uppercase">Draft</span>
+</div>
+</div>
+</div>
+<div class="space-y-4">
+<h3 class="text-lg font-bold">Recommended for Weekend</h3>
+<div class="bg-white dark:bg-slate-900 rounded-xl border border-slate-200 dark:border-slate-800 overflow-hidden group">
+<div class="h-32 bg-cover bg-center" data-alt="Aerial view of a trendy urban bistro" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBF0izMwRZYpfdpn5s3_efJBA4XZTjbi9pLic774gCW910qv3r5iybqNgY0o5atfCbTW9D9RUstwBO749Y4M_fsswlZZRuUEDZA-mgfPWn_GC2uAA8QCUymM0u3WAl1jYR2Nb015Jtd0bmdkGXg9HaDUcNZoxQZ_soNmGvYhgiMz_dSUaWFQ99kty-vr2LUNEuFoS00ZUVr0V_9rBIFHfvK9qis6mcs8zq7If9Z3gk1_x2l2o9jhxvKdmtxa7S2ilokjay8FdI4JW0')"></div>
+<div class="p-4">
+<p class="font-bold text-slate-900 dark:text-white">The Glass House</p>
+<p class="text-sm text-slate-500 dark:text-slate-400 mb-4 line-clamp-1">New rooftop opening in West Side with curated wine pairings.</p>
+<div class="flex items-center justify-between">
+<div class="flex gap-1 text-primary">
+<span class="material-symbols-outlined text-sm fill-1">star</span>
+<span class="material-symbols-outlined text-sm fill-1">star</span>
+<span class="material-symbols-outlined text-sm fill-1">star</span>
+<span class="material-symbols-outlined text-sm fill-1">star</span>
+<span class="material-symbols-outlined text-sm fill-1">star_half</span>
+</div>
+<button class="text-xs font-bold text-primary hover:underline">Learn more</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Contextual Memory Panel -->
+<aside class="w-80 border-l border-slate-200 dark:border-slate-800 flex flex-col shrink-0 bg-white dark:bg-slate-950 overflow-y-auto custom-scrollbar">
+<div class="p-6">
+<div class="flex items-center justify-between mb-8">
+<h2 class="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">memory</span> Contextual Memory
+                    </h2>
+</div>
+<div class="space-y-6">
+<div>
+<h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Core Preferences</h3>
+<div class="space-y-3">
+<div class="p-3 bg-slate-50 dark:bg-slate-900 rounded-lg border border-slate-100 dark:border-slate-800 flex items-start gap-3">
+<span class="material-symbols-outlined text-primary text-lg">deck</span>
+<div>
+<p class="text-sm font-bold text-slate-900 dark:text-white">Favorite: Outdoor seating</p>
+<p class="text-xs text-slate-500 dark:text-slate-400">Prefers patios even in cooler weather (if heaters are present).</p>
+</div>
+</div>
+<div class="p-3 bg-slate-50 dark:bg-slate-900 rounded-lg border border-slate-100 dark:border-slate-800 flex items-start gap-3">
+<span class="material-symbols-outlined text-primary text-lg">wine_bar</span>
+<div>
+<p class="text-sm font-bold text-slate-900 dark:text-white">Vibe: Intimate &amp; Low-Lit</p>
+<p class="text-xs text-slate-500 dark:text-slate-400">For evening dining, prefers acoustic music or no music.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<h3 class="text-xs font-bold text-red-500/80 uppercase tracking-widest mb-4">Health &amp; Restrictions</h3>
+<div class="space-y-3">
+<div class="p-3 bg-red-500/5 dark:bg-red-500/10 rounded-lg border border-red-500/20 flex items-start gap-3">
+<span class="material-symbols-outlined text-red-500 text-lg">warning</span>
+<div>
+<p class="text-sm font-bold text-red-600 dark:text-red-400">Restriction: Shellfish allergy</p>
+<p class="text-xs text-red-600/70 dark:text-red-400/70">Severe reaction. AI automatically filters all seafood-focused menus.</p>
+</div>
+</div>
+</div>
+</div>
+<div>
+<h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Recent Learnings</h3>
+<div class="relative pl-4 space-y-6 before:content-[''] before:absolute before:left-0 before:top-2 before:bottom-2 before:w-px before:bg-slate-200 dark:before:bg-slate-800">
+<div class="relative">
+<div class="absolute -left-[18px] top-1 size-2 rounded-full bg-primary ring-4 ring-white dark:ring-slate-950"></div>
+<p class="text-xs text-slate-400 mb-1">Oct 21</p>
+<p class="text-sm font-medium">Disliked <span class="italic text-primary">Le Petit Bistro</span> due to table crowding.</p>
+</div>
+<div class="relative">
+<div class="absolute -left-[18px] top-1 size-2 rounded-full bg-slate-300 dark:bg-slate-700 ring-4 ring-white dark:ring-slate-950"></div>
+<p class="text-xs text-slate-400 mb-1">Oct 19</p>
+<p class="text-sm font-medium">Added "Natural Wine" to interest list.</p>
+</div>
+<div class="relative">
+<div class="absolute -left-[18px] top-1 size-2 rounded-full bg-slate-300 dark:bg-slate-700 ring-4 ring-white dark:ring-slate-950"></div>
+<p class="text-xs text-slate-400 mb-1">Oct 15</p>
+<p class="text-sm font-medium">Prefers reservations before 8:00 PM on weekdays.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-8 bg-primary/10 rounded-xl p-6 text-center">
+<p class="text-xs font-bold text-primary uppercase mb-2">Memory Strength</p>
+<p class="text-2xl font-black text-slate-900 dark:text-white">88%</p>
+<p class="text-xs text-slate-500 dark:text-slate-400 mt-2">DineWise knows you well! The more you interact, the better the insights.</p>
+</div>
+</div>
+</aside>
+</div>
+</body></html>

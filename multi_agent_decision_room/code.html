@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>DineWise AI - Multi-Agent Decision Room</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#12aee2",
+                        "background-light": "#f6f8f8",
+                        "background-dark": "#101d22",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Manrope', sans-serif;
+        }
+        .agent-pulse {
+            position: relative;
+        }
+        .agent-pulse::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            border: 2px solid #12aee2;
+            border-radius: 9999px;
+            opacity: 0.4;
+        }
+        .flow-line {
+            background: linear-gradient(90deg, rgba(18,174,226,0) 0%, rgba(18,174,226,1) 50%, rgba(18,174,226,0) 100%);
+            height: 2px;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100 min-h-screen flex flex-col">
+<!-- Top Navigation Bar -->
+<header class="flex items-center justify-between border-b border-primary/20 bg-background-light dark:bg-background-dark px-10 py-3 sticky top-0 z-50">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-3 text-primary">
+<span class="material-symbols-outlined text-3xl font-bold">restaurant_menu</span>
+<h2 class="text-xl font-extrabold tracking-tight dark:text-slate-100">DineWise AI</h2>
+</div>
+<div class="hidden lg:flex items-center gap-6">
+<a class="text-slate-600 dark:text-slate-400 hover:text-primary transition-colors text-sm font-semibold" href="#">Dashboard</a>
+<a class="text-primary border-b-2 border-primary pb-0.5 text-sm font-semibold" href="#">Decision Room</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-primary transition-colors text-sm font-semibold" href="#">History</a>
+<a class="text-slate-600 dark:text-slate-400 hover:text-primary transition-colors text-sm font-semibold" href="#">Agents</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xl">search</span>
+<input class="bg-primary/5 border border-primary/20 rounded-lg pl-10 pr-4 py-2 text-sm focus:ring-2 focus:ring-primary focus:border-transparent outline-none w-64 dark:text-slate-200" placeholder="Search insights..."/>
+</div>
+<button class="p-2 rounded-lg bg-primary/10 text-primary hover:bg-primary/20 transition-all">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="h-10 w-10 rounded-full border-2 border-primary/30 p-0.5">
+<img alt="User Profile" class="rounded-full bg-primary/10" data-alt="Stylized avatar of a male user" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC3HdaZ_-vp__0b1VVTe7ZRQwEaRYtY5P6Ci0CoeUtgjSE3TNl7BGCFLLWFKQ_YlhSiHkzFnMWRPl_jXx5D97vHbgcxiShtnWepOV-b5iGhJW0flEzq230DG5242zPk2EVkccMG0ui3HIroKewrEt_kmOLFpi2fd7cqQk0KqwKvaXlIAqebWCiT8HKMmrJtASxzgVVGq23eGMTq1YfAUzgDsN6J__koQiTbF0BDfy0dKmliSRArjPZvDdVOntXI6aoKLImSL4FjqDM"/>
+</div>
+</div>
+</header>
+<main class="flex-1 flex overflow-hidden">
+<!-- Sidebar Navigation -->
+<aside class="w-64 border-r border-primary/10 bg-background-light dark:bg-background-dark hidden xl:flex flex-col p-6 gap-8">
+<div class="space-y-1">
+<h3 class="text-xs font-bold text-primary uppercase tracking-widest mb-4">Active Session</h3>
+<div class="p-3 bg-primary/10 rounded-xl border border-primary/20">
+<p class="text-sm font-bold text-primary">Request #8291</p>
+<p class="text-xs text-slate-500 dark:text-slate-400 mt-1 italic">"Find a quiet Italian spot for a business dinner"</p>
+</div>
+</div>
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-primary/10 text-slate-600 dark:text-slate-300" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-sm font-bold">Overview</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl bg-primary text-white shadow-lg shadow-primary/20" href="#">
+<span class="material-symbols-outlined">hub</span>
+<span class="text-sm font-bold">Live Orchestration</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-primary/10 text-slate-600 dark:text-slate-300" href="#">
+<span class="material-symbols-outlined">forum</span>
+<span class="text-sm font-bold">Agent Debates</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-primary/10 text-slate-600 dark:text-slate-300" href="#">
+<span class="material-symbols-outlined">database</span>
+<span class="text-sm font-bold">Data Sources</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-primary/10 text-slate-600 dark:text-slate-300" href="#">
+<span class="material-symbols-outlined">task_alt</span>
+<span class="text-sm font-bold">Final Consensus</span>
+</a>
+</nav>
+<div class="mt-auto p-4 bg-slate-100 dark:bg-slate-800/50 rounded-xl">
+<p class="text-xs font-semibold text-slate-500 mb-2">System Health</p>
+<div class="flex items-center justify-between mb-1">
+<span class="text-[10px] font-bold">CPU Usage</span>
+<span class="text-[10px] text-primary">24%</span>
+</div>
+<div class="w-full h-1 bg-slate-200 dark:bg-slate-700 rounded-full overflow-hidden">
+<div class="w-1/4 h-full bg-primary"></div>
+</div>
+</div>
+</aside>
+<!-- Main Workspace -->
+<section class="flex-1 flex flex-col h-[calc(100vh-64px)] overflow-hidden">
+<!-- Workspace Header -->
+<div class="px-8 py-6 flex items-center justify-between border-b border-primary/10">
+<div>
+<h1 class="text-2xl font-black tracking-tight flex items-center gap-3">
+                        Multi-Agent Decision Room
+                        <span class="bg-primary/20 text-primary text-xs px-2 py-0.5 rounded-full uppercase tracking-widest font-bold">Live</span>
+</h1>
+<p class="text-slate-500 dark:text-slate-400 text-sm mt-1">Orchestrating 3 specialist agents for current request</p>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center gap-2 px-4 py-2 bg-slate-200 dark:bg-slate-800 text-sm font-bold rounded-lg hover:bg-slate-300 transition-colors">
+<span class="material-symbols-outlined text-lg">pause</span>
+                        Pause
+                    </button>
+<button class="flex items-center gap-2 px-4 py-2 bg-primary text-white text-sm font-bold rounded-lg hover:brightness-110 transition-all">
+<span class="material-symbols-outlined text-lg">bolt</span>
+                        Force Consensus
+                    </button>
+</div>
+</div>
+<!-- Orchestration Content -->
+<div class="flex-1 flex flex-col lg:flex-row overflow-hidden p-6 gap-6">
+<!-- Thinking Map (Central Area) -->
+<div class="flex-[2] bg-slate-50 dark:bg-slate-800/30 rounded-2xl border border-primary/10 relative overflow-hidden">
+<div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle at 2px 2px, #12aee2 1px, transparent 0); background-size: 24px 24px;"></div>
+<!-- SVG Lines for Connections -->
+<svg class="absolute inset-0 w-full h-full" style="z-index: 1;">
+<line class="opacity-30" stroke="#12aee2" stroke-dasharray="8,4" stroke-width="2" x1="20%" x2="50%" y1="50%" y2="25%"></line>
+<line class="opacity-30" stroke="#12aee2" stroke-dasharray="8,4" stroke-width="2" x1="20%" x2="50%" y1="50%" y2="75%"></line>
+<line class="opacity-30" stroke="#12aee2" stroke-dasharray="8,4" stroke-width="2" x1="50%" x2="80%" y1="25%" y2="50%"></line>
+<line class="opacity-30" stroke="#12aee2" stroke-dasharray="8,4" stroke-width="2" x1="50%" x2="80%" y1="75%" y2="50%"></line>
+</svg>
+<!-- Agents Map -->
+<div class="relative z-10 w-full h-full flex items-center justify-center">
+<!-- Request Core -->
+<div class="absolute left-[10%] top-1/2 -translate-y-1/2 text-center w-32">
+<div class="w-16 h-16 rounded-2xl bg-primary flex items-center justify-center mx-auto mb-2 shadow-xl shadow-primary/30">
+<span class="material-symbols-outlined text-white text-3xl">lightbulb</span>
+</div>
+<span class="text-xs font-black uppercase text-primary">Original Request</span>
+</div>
+<!-- Specialized Agents -->
+<div class="absolute left-[40%] top-[15%] text-center w-40 p-4 bg-background-light dark:bg-background-dark border-2 border-primary rounded-2xl shadow-xl">
+<div class="w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center mx-auto mb-2 agent-pulse">
+<span class="material-symbols-outlined">restaurant</span>
+</div>
+<h4 class="text-sm font-bold">Foodie Critic</h4>
+<p class="text-[10px] text-slate-500 mt-1">Analyzing menu items &amp; recent reviews...</p>
+</div>
+<div class="absolute left-[40%] bottom-[15%] text-center w-40 p-4 bg-background-light dark:bg-background-dark border-2 border-primary rounded-2xl shadow-xl">
+<div class="w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center mx-auto mb-2 agent-pulse">
+<span class="material-symbols-outlined">local_parking</span>
+</div>
+<h4 class="text-sm font-bold">Logistics Expert</h4>
+<p class="text-[10px] text-slate-500 mt-1">Checking traffic flow &amp; parking capacity...</p>
+</div>
+<div class="absolute left-[65%] top-1/2 -translate-y-1/2 text-center w-40 p-4 bg-background-light dark:bg-background-dark border-2 border-primary rounded-2xl shadow-xl">
+<div class="w-12 h-12 rounded-full bg-primary/10 text-primary flex items-center justify-center mx-auto mb-2">
+<span class="material-symbols-outlined">volume_mute</span>
+</div>
+<h4 class="text-sm font-bold">Vibe Analyst</h4>
+<p class="text-[10px] text-slate-500 mt-1">Measuring decibel data &amp; atmosphere...</p>
+</div>
+<!-- Output Core -->
+<div class="absolute right-[5%] top-1/2 -translate-y-1/2 text-center w-32">
+<div class="w-16 h-16 rounded-full border-4 border-slate-300 dark:border-slate-700 flex items-center justify-center mx-auto mb-2 animate-pulse">
+<span class="material-symbols-outlined text-slate-400 text-3xl">pending</span>
+</div>
+<span class="text-xs font-black uppercase text-slate-400">Converging...</span>
+</div>
+</div>
+</div>
+<!-- Agent Debate Log (Side Panel) -->
+<div class="w-full lg:w-96 flex flex-col gap-4">
+<div class="flex-1 bg-background-light dark:bg-slate-900 border border-primary/10 rounded-2xl flex flex-col overflow-hidden">
+<div class="p-4 border-b border-primary/10 bg-primary/5 flex items-center justify-between">
+<h3 class="text-sm font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-lg">history_edu</span>
+                                Real-time Debate Log
+                            </h3>
+<span class="w-2 h-2 rounded-full bg-primary animate-ping"></span>
+</div>
+<div class="flex-1 overflow-y-auto p-4 space-y-4">
+<!-- Message -->
+<div class="space-y-1">
+<div class="flex items-center gap-2">
+<span class="text-[10px] font-bold text-primary uppercase">The Foodie Critic</span>
+<span class="text-[10px] text-slate-400">14:22:01</span>
+</div>
+<div class="bg-slate-100 dark:bg-slate-800 p-3 rounded-lg rounded-tl-none border-l-2 border-primary text-xs leading-relaxed">
+                                    "La Lanterna" has a 4.9 rating for their Truffle Gnocchi. It's consistently top-rated for quality.
+                                </div>
+</div>
+<!-- Message -->
+<div class="space-y-1">
+<div class="flex items-center gap-2 justify-end">
+<span class="text-[10px] text-slate-400">14:22:05</span>
+<span class="text-[10px] font-bold text-amber-500 uppercase">Logistics Expert</span>
+</div>
+<div class="bg-amber-50 dark:bg-amber-900/20 p-3 rounded-lg rounded-tr-none border-r-2 border-amber-500 text-xs leading-relaxed text-right">
+                                    But "La Lanterna" is in a construction zone. Parking is impossible at 7 PM. The client will be late.
+                                </div>
+</div>
+<!-- Message -->
+<div class="space-y-1">
+<div class="flex items-center gap-2">
+<span class="text-[10px] font-bold text-primary uppercase">The Foodie Critic</span>
+<span class="text-[10px] text-slate-400">14:22:12</span>
+</div>
+<div class="bg-slate-100 dark:bg-slate-800 p-3 rounded-lg rounded-tl-none border-l-2 border-primary text-xs leading-relaxed">
+                                    Understood. Moving "Osteria Del Sole" to priority. Menus are authentic.
+                                </div>
+</div>
+<!-- Message -->
+<div class="space-y-1">
+<div class="flex items-center gap-2 justify-end">
+<span class="text-[10px] text-slate-400">14:22:18</span>
+<span class="text-[10px] font-bold text-emerald-500 uppercase">Vibe Analyst</span>
+</div>
+<div class="bg-emerald-50 dark:bg-emerald-900/20 p-3 rounded-lg rounded-tr-none border-r-2 border-emerald-500 text-xs leading-relaxed text-right">
+                                    Checking decibel history for Osteria Del Sole... 55dB average. Perfect for a business dinner.
+                                </div>
+</div>
+<!-- Message -->
+<div class="space-y-1">
+<div class="flex items-center gap-2">
+<span class="text-[10px] font-bold text-primary uppercase">The Foodie Critic</span>
+<span class="text-[10px] text-slate-400">14:22:25</span>
+</div>
+<div class="bg-slate-100 dark:bg-slate-800 p-3 rounded-lg rounded-tl-none border-l-2 border-primary text-xs leading-relaxed">
+                                    Agreed. Osteria Del Sole is a strong candidate. Searching for a fallback now.
+                                </div>
+</div>
+</div>
+<div class="p-3 border-t border-primary/10">
+<div class="bg-slate-100 dark:bg-slate-800 rounded-lg p-2 flex items-center gap-2">
+<div class="flex-1 text-[10px] text-slate-400 italic">Intervention restricted during live orchestration...</div>
+<span class="material-symbols-outlined text-slate-400 text-sm">lock</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Consensus Results -->
+<div class="px-8 py-6 border-t border-primary/10 bg-slate-50/50 dark:bg-slate-900/50">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-sm font-bold flex items-center gap-2 uppercase tracking-widest text-primary">
+<span class="material-symbols-outlined text-lg">check_circle</span>
+                        Converging Recommendations
+                    </h3>
+<div class="flex items-center gap-2">
+<span class="text-xs text-slate-500 font-medium">Confidence: </span>
+<div class="w-32 h-2 bg-slate-200 dark:bg-slate-700 rounded-full">
+<div class="w-[88%] h-full bg-primary rounded-full"></div>
+</div>
+<span class="text-xs font-bold text-primary">88%</span>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- Recommendation Card -->
+<div class="bg-background-light dark:bg-background-dark border border-primary/20 rounded-xl p-4 shadow-sm hover:shadow-md transition-all border-l-4 border-l-primary group">
+<div class="flex justify-between items-start mb-3">
+<div>
+<h4 class="font-bold group-hover:text-primary transition-colors">Osteria Del Sole</h4>
+<p class="text-xs text-slate-500 dark:text-slate-400">Quiet • Authentic Italian • Valet Parking</p>
+</div>
+<span class="bg-primary/10 text-primary text-[10px] px-2 py-1 rounded font-black">#1 MATCH</span>
+</div>
+<div class="flex items-center gap-4 text-[10px] font-bold text-slate-400 mb-3">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-xs">star</span> 4.8</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-xs">volume_down</span> 52dB</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-xs">distance</span> 2.1 mi</span>
+</div>
+<div class="pt-3 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center">
+<span class="text-[10px] uppercase font-bold text-emerald-500">Unanimous Consensus</span>
+<button class="text-xs font-bold text-primary flex items-center gap-1">View Details <span class="material-symbols-outlined text-xs">chevron_right</span></button>
+</div>
+</div>
+<!-- Recommendation Card -->
+<div class="bg-background-light dark:bg-background-dark border border-slate-200 dark:border-slate-800 rounded-xl p-4 shadow-sm opacity-80 hover:opacity-100 transition-all">
+<div class="flex justify-between items-start mb-3">
+<div>
+<h4 class="font-bold">Il Posto</h4>
+<p class="text-xs text-slate-500 dark:text-slate-400">Boutique • Wine Bar • High-end</p>
+</div>
+<span class="bg-slate-100 dark:bg-slate-800 text-slate-500 text-[10px] px-2 py-1 rounded font-black">#2 MATCH</span>
+</div>
+<div class="flex items-center gap-4 text-[10px] font-bold text-slate-400 mb-3">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-xs">star</span> 4.6</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-xs">volume_down</span> 58dB</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-xs">distance</span> 0.8 mi</span>
+</div>
+<div class="pt-3 border-t border-slate-100 dark:border-slate-800 flex justify-between items-center">
+<span class="text-[10px] uppercase font-bold text-amber-500">Partial Consensus (2/3)</span>
+<button class="text-xs font-bold text-primary flex items-center gap-1">View Details <span class="material-symbols-outlined text-xs">chevron_right</span></button>
+</div>
+</div>
+<!-- Recommendation Card -->
+<div class="bg-background-light dark:bg-background-dark border border-slate-200 dark:border-slate-800 rounded-xl p-4 shadow-sm opacity-50 relative overflow-hidden">
+<div class="flex justify-between items-start mb-3">
+<div>
+<h4 class="font-bold italic">Analyzing...</h4>
+<p class="text-xs text-slate-500 dark:text-slate-400">Awaiting Vibe Check</p>
+</div>
+</div>
+<div class="w-full h-1 bg-slate-100 dark:bg-slate-800 rounded-full mt-4 overflow-hidden">
+<div class="w-1/3 h-full bg-slate-400 animate-pulse"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+</body></html>
